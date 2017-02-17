@@ -1,9 +1,19 @@
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+public enum BlingMode {
+    ROBOT_INIT,
+    ROBOT_ERROR,
+    CLIMBING,
+
+
+    // Insert all other modes above this last entry
+    OFF
+}
+	
 public class Bling 
 {
 	NetworkTable newtable;
-	
+
 	
 	//Instance Variables
 	private String color;
@@ -13,6 +23,7 @@ public class Bling
 	private String pattern;
 	private String segment;
 	private String put;
+	private String put2;
 	
 	//Constructor
 	public Bling()
@@ -36,28 +47,139 @@ public class Bling
 	
 	public void disableLeds()
 	{
-		
-	}
-	
-	public void blinkRight()
-	{
-		min = 19;
-		max = 36;
-	}
-	
-	public void blinkLeft()
-	{
-		min = 1;
-		max = 18;
-	}
-	
-	public void setColor(String color)
-	{
-		this.color = color;
+		put = "Pattern=" + "off" + "," + "Color=" + color + "," + "Segment=" + segment + "," + "Speed=" + speed + "," + "Min=" + min + "," + "Max=" + max; 
 	}
 	
 	public void send()
 	{
 		newtable.putString("command", put);
 	}
+
+    /** Set of API functions that can be called from the robot code to send and
+        pattern to the bling **/
+    public void sendPattern( BlingPattern pattern )
+    {
+        Boolean validPattern(true);
+
+        switch( pattern )
+        {
+            case ROBOT_INIT:
+		        setPattern("RainbowHalves", "rainbow", "all", "medium", 0, 100);
+                break;
+            case ROBOT_ERROR:
+		        setPattern("Alternates", "christmas", "all", "medium", 0, 100);
+                break;
+            case CLIMBING:
+                setPattern("ColorFade", "teamcolors", "all", "fast", 0, 100);
+                break;
+
+            // put all pattern specifiers above this point
+            case OFF:
+                disableLeds();
+                break;
+            default:
+                setPattern("Error", "red", "fast", 0, 100);
+                break;
+        }
+        
+        if ( validPattern ) {
+            send();
+        }
+
+        return;
+    }
+
+    public void sendRobotInit()
+    {
+		setPattern("RainbowHalves", "red", "all", "medium", 0, 100);
+		send();
+    }
+
+	public void sendClimbing()
+	{
+		setPattern("ColorFade", "teamcolors", "all", "fast", 0, 100);
+		send();
+	}
+
+	public void sendFinished()
+	{
+		setPattern("RainbowHalves", "red", "all", "fast", 0, 100);
+		send();
+	}
+			
+	public void sendFinishedClimbing()
+	{
+	    setPattern("colorPattern", "teamcolors", "all", "medium", 0, 100);
+		send();
+	}
+			
+	public void sendLeftTurning()
+	{
+		setPattern("ColorWipe", "green", "left", "fast", 0, 100);
+	    send();
+	}
+			
+	public void sendRightTurning()
+	{
+		setPattern("ColorWipe", "green", "right", "fast", 0, 100);
+		send();
+	}
+	public void sendDrive()
+	{
+		setPattern("solid", "blue", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendBackup()
+	{
+		setPattern("blinking", "yellow", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendEnd()
+	{
+		setPattern("fireflies", "rainbow", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendOff()
+	{
+		disableLeds();
+		send();
+	}
+	public void sendRobotInit()
+	{
+		setPattern("rainbowHalves", "rainbow", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendAutoDrive()
+	{
+		setPattern("wave", "green", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendAutoTurnRight()
+	{
+		setPattern("blinking", "Green", "right", "medium", 0, 100);
+		send();
+	}
+	public void sendAutoTurnLeft()
+	{
+		setPattern("blinking", "Green", "left", "medium", 0, 100);
+		send();
+	}
+	public void sendPegTargeting()
+	{
+		setPattern("scanner", "Green", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendBoilerTargeting()
+	{
+		setPattern("scanner", "Yellow", "all", "medium", 0, 100);
+		send();
+	}
+	public void sendFuelLaunchReady()
+	{
+		setPattern("solid", "Green", "all", "medium", 0, 100);
+		send();
+	}
+	
+	
+
 }
