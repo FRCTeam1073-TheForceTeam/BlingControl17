@@ -1,15 +1,5 @@
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-public enum BlingMode {
-    ROBOT_INIT,
-    ROBOT_ERROR,
-    CLIMBING,
-
-
-    // Insert all other modes above this last entry
-    OFF
-}
-	
 public class Bling 
 {
 	NetworkTable newtable;
@@ -57,9 +47,9 @@ public class Bling
 
     /** Set of API functions that can be called from the robot code to send and
         pattern to the bling **/
-    public void sendPattern( BlingPattern pattern )
+    public void sendPattern( BlingMode pattern )
     {
-        Boolean validPattern(true);
+        Boolean validPattern = true;
 
         switch( pattern )
         {
@@ -78,7 +68,7 @@ public class Bling
                 disableLeds();
                 break;
             default:
-                setPattern("Error", "red", "fast", 0, 100);
+                setPattern("Error", "red", "all", "fast", 0, 100);
                 break;
         }
         
@@ -87,12 +77,6 @@ public class Bling
         }
 
         return;
-    }
-
-    public void sendRobotInit()
-    {
-		setPattern("RainbowHalves", "red", "all", "medium", 0, 100);
-		send();
     }
 
 	public void sendClimbing()

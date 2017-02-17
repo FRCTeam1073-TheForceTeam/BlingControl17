@@ -1,5 +1,6 @@
 import java.util.Scanner;
-public class BlingRunnerTwo {
+
+public class BlingRunnerThree {
 
 	public static void main(String[] args) {
 
@@ -12,7 +13,12 @@ public class BlingRunnerTwo {
 			System.out.println("What pattern do you want to run?");
 			String answer = oper.next(); 
 			
-			if(answer.equalsIgnoreCase("c"))
+			if(answer.equalsIgnoreCase("i"))
+			{
+				lights.sendPattern( BlingMode.ROBOT_INIT );
+			}
+			
+			else if(answer.equalsIgnoreCase("c"))
 			{
 				lights.sendClimbing();
 			}
